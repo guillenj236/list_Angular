@@ -1,22 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Pessoa } from 'src/app/models/pessoa';
-import { PessoaService } from 'src/app/services/pessoa.service';
+import { Livro } from 'src/app/models/livro';
+import { LivroService } from 'src/app/services/livro.service';
 
 @Component({
-  selector: 'app-pessoaslist',
-  templateUrl: './pessoaslist.component.html',
-  styleUrls: ['./pessoaslist.component.scss']
+  selector: 'app-livroslist',
+  templateUrl: './livroslist.component.html',
+  styleUrls: ['./livroslist.component.scss']
 })
-export class PessoaslistComponent {
+export class LivroslistComponent {
+  
+  lista: Livro[] = [];
 
-  lista: Pessoa[] = [];
-
-  pessoaSelecionadaParaEdicao: Pessoa = new Pessoa();
+  livroSelecionadaParaEdicao: Livro = new Livro();
   indiceSelecionadoParaEdicao!: number;
 
   modalService = inject(NgbModal);
-  pessoaService = inject(PessoaService);
+  livroService = inject(LivroService);
 
   constructor() {
     this.listAll();
@@ -25,7 +25,7 @@ export class PessoaslistComponent {
 
   listAll() {
 
-    this.pessoaService.listAll().subscribe({
+    this.livroService.listAll().subscribe({
       next: lista => {
         this.lista = lista;
       },
@@ -39,7 +39,7 @@ export class PessoaslistComponent {
 
   exemploErro() {
 
-    this.pessoaService.exemploErro().subscribe({
+    this.livroService.exemploErro().subscribe({
       next: lista => {
         this.lista = lista;
       },
@@ -53,29 +53,29 @@ export class PessoaslistComponent {
 
 
   adicionar(modal: any) {
-    this.pessoaSelecionadaParaEdicao = new Pessoa();
+    this.livroSelecionadaParaEdicao = new Livro();
 
     this.modalService.open(modal, { size: 'sm' });
   }
 
-  editar(modal: any, pessoa: Pessoa, indice: number) {
-    this.pessoaSelecionadaParaEdicao = Object.assign({}, pessoa); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
+  editar(modal: any, livro: Livro, indice: number) {
+    this.livroSelecionadaParaEdicao = Object.assign({}, livro); //clonando o objeto se for edição... pra não mexer diretamente na referência da lista
     this.indiceSelecionadoParaEdicao = indice;
 
     this.modalService.open(modal, { size: 'sm' });
   }
 
-  addOuEditarPessoa(pessoa: Pessoa) {
+  addOuEditarLivro(livro: Livro) {
 
     this.listAll();
 
     /*
 
-    if (this.pessoaSelecionadaParaEdicao.id > 0) { //MODO EDITAR
-      this.lista[this.indiceSelecionadoParaEdicao] = pessoa;
+    if (this.livroSelecionadaParaEdicao.id > 0) { //MODO EDITAR
+      this.lista[this.indiceSelecionadoParaEdicao] = livro;
     } else {
-      pessoa.id = 99;
-      this.lista.push(pessoa);
+      livro.id = 99;
+      this.lista.push(livro);
     }
     */
 
@@ -83,7 +83,7 @@ export class PessoaslistComponent {
 
   }
   deletar(id: number) {
-    this.pessoaService.delete(id).subscribe({
+    this.livroService.delete(id).subscribe({
       next: retorno => { 
         this.listAll();
       },
@@ -93,5 +93,6 @@ export class PessoaslistComponent {
       }
     });
   }
+
 
 }
