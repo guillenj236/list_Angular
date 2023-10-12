@@ -25,7 +25,10 @@ public class PessoaService {
 
 		return listaDTO;
 	}
-	
+	public void delete(final Long id) {
+		final Pessoa pessoaBanco = this.pessoaRepository.findById(id).orElse(null);
+		this.pessoaRepository.delete(pessoaBanco);
+	}
 	public PessoaDTO save(PessoaDTO pessoaDTO){
 		Pessoa pessoa = this.toPessoa(pessoaDTO);
 
@@ -33,6 +36,8 @@ public class PessoaService {
 
 		return this.toPessoaDTO(pessoasalva);
 	}
+
+
 
 	private PessoaDTO toPessoaDTO(Pessoa pessoa) {
 		PessoaDTO pessoaDTO = new PessoaDTO();
